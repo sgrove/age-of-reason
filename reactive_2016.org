@@ -1,7 +1,7 @@
 #+REVEAL_THEME: solarized
 #+REVEAL_TRANS: linear
 #+OPTIONS: reveal_title_slide:nil num:nil
-* Reason
+* [[https://facebook.github.io/reason/][Reason]]
 
 A new developer experience based on OCaml, built by the same people behind React, with friendly syntax, deep editor integration, and carefully thought out build tooling.
 
@@ -375,9 +375,7 @@ Author of Rewitness, helped a ton with env setup, code structure, hand-holding, 
 [[https://github.com/sgrove/age-of-reason/raw/master/img/schmavery.jpeg]]
 
 #+REVEAL: split
-[[https://twitter.com/Sander_Spies][Sanders]] and [[https://twitter.com/danielwoelfel][Daniel]]
-
-JSX & Talk review
+[[https://twitter.com/Sander_Spies][Sanders]] and [[https://twitter.com/danielwoelfel][Daniel]] | JSX & Talk review
 [[https://github.com/sgrove/age-of-reason/raw/master/img/sanderspies.jpeg]] &
 [[https://github.com/sgrove/age-of-reason/raw/master/img/dwwoelfel.png]]
 
