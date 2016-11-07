@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title></title>
+<meta name="author" content="(Sean Grove)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="/support/reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="/support/reveal.js/css/theme/solarized.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = '/support/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="table-of-contents">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#/slide-orgheadline1">Reason</a></li>
+<li><a href="#/slide-orgheadline2">Demo</a></li>
+<li><a href="#/slide-orgheadline5">Fun!</a>
+<ul>
+<li><a href="#/slide-orgheadline4">Robotic pair buddy</a>
+<ul>
+<li><a href="#/slide-orgheadline3">BetterErrors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#/slide-orgheadline15">Reach!</a>
+<ul>
+<li><a href="#/slide-orgheadline7">Unikernels - MirageOS</a>
+<ul>
+<li><a href="#/slide-orgheadline6">Fantastically small numbers</a></li>
+</ul>
+</li>
+<li><a href="#/slide-orgheadline8">Unix/Windows</a></li>
+<li><a href="#/slide-orgheadline12">Javascript</a>
+<ul>
+<li><a href="#/slide-orgheadline9">Computer or human (1/2)?</a></li>
+<li><a href="#/slide-orgheadline10">Computer or human (2/2)?</a></li>
+<li><a href="#/slide-orgheadline11">Fst</a></li>
+</ul>
+</li>
+<li><a href="#/slide-orgheadline13">ARM64</a></li>
+<li><a href="#/slide-orgheadline14">Reach?</a></li>
+</ul>
+</li>
+<li><a href="#/slide-orgheadline16">Power!</a></li>
+<li><a href="#/slide-orgheadline17">Conclusion</a></li>
+<li><a href="#/slide-orgheadline20">So where's OCaml been?</a>
+<ul>
+<li><a href="#/slide-orgheadline18">OCaml Challenges</a></li>
+<li><a href="#/slide-orgheadline19">OCaml Challenges continued&#x2026;</a></li>
+</ul>
+</li>
+<li><a href="#/slide-orgheadline21">Re-Projects</a></li>
+<li><a href="#/slide-orgheadline23">Tradeoffs</a>
+<ul>
+<li><a href="#/slide-orgheadline22">Flow</a></li>
+</ul>
+</li>
+<li><a href="#/slide-orgheadline24">Misc</a></li>
+<li><a href="#/slide-orgheadline25">ReasonCup</a></li>
+<li><a href="#/slide-orgheadline26">Thanks</a></li>
+</ul>
+</div>
+</div>
+</section>
+<section>
+<section id="slide-orgheadline1">
+<h2 id="orgheadline1">Reason</h2>
+<p>
+A new developer experience based on OCaml, built by the same people behind React, with friendly syntax, deep editor integration, and carefully thought out build tooling.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline2">
+<h2 id="orgheadline2">Demo</h2>
+<p>
+First off, prove it's a Pacman-complete language.
+</p>
+
+<p>
+Anyone know Witness?
+</p>
+
+<p>
+Anyone like the Re-prefix?
+</p>
+
+<p>
+Then you'll love&#x2026;
+</p>
+
+<p>
+<a href="https://github.com/bsansouci/rewitness"><b>Rewitness</b></a>
+</p>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline5">
+<h2 id="orgheadline5">Fun!</h2>
+<p>
+Reason is a language that wants to <b>help</b> you, not block you.
+</p>
+
+<p>
+The <i>Goldilocks</i> of languages
+</p>
+
+<ul>
+<li>Type system tries <b>really</b> not to block or burden you</li>
+<li>But still, it's   <b>very</b> effective at blocking simple bugs</li>
+<li>Encourages a free <b>fun</b> ctional style, but allows for imperative code when necessary</li>
+
+</ul>
+
+</section>
+<section id="slide-orgheadline4">
+<h3 id="orgheadline4">Robotic pair buddy</h3>
+</section>
+<section >
+<p>
+"Whoops, we missed a spot!"
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-reason"><span class="linenr">1: </span><span style="color: #00ffff;">let</span> is_odd number =&gt;
+<span class="linenr">2: </span>  <span style="color: #00ffff;">switch</span> number {
+<span class="linenr">3: </span>  | 0 =&gt; <span style="color: #00ffff;">false</span>
+<span class="linenr">4: </span>  | 1 =&gt; <span style="color: #00ffff;">true</span>
+<span class="linenr">5: </span>  | 2 =&gt; <span style="color: #00ffff;">false</span>
+<span class="linenr">6: </span>  };
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre  class="src src-misc">Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+3
+</pre>
+</div>
+</section>
+<section >
+<p>
+"Whoops, we missed a spot!"
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-reason"><span class="linenr"> 1: </span><span style="color: #00ffff;">type</span> <span style="color: #ff7f50;">animal</span> =
+<span class="linenr"> 2: </span>  | <span style="color: #ff7f50;">Cat</span>
+<span class="linenr"> 3: </span>  | <span style="color: #ff7f50;">Dog</span>
+<span class="linenr"> 4: </span>  | <span style="color: #ff7f50;">Bird</span>;
+<span class="linenr"> 5: </span>
+<span class="linenr"> 6: </span><span style="color: #00ffff;">let</span> petAnimal animal =&gt;
+<span class="linenr"> 7: </span>  <span style="color: #00ffff;">switch</span> animal {
+<span class="linenr"> 8: </span>  | <span style="color: #ff7f50;">Cat</span> =&gt; {}
+<span class="linenr"> 9: </span>  | <span style="color: #ff7f50;">Dog</span> =&gt; {}
+<span class="linenr">10: </span>  };
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre  class="src src-misc">Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+Bird
+</pre>
+</div>
+</section>
+<section >
+<p>
+"One of these is not like the other&#x2026;"
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-reason"><span class="linenr"> 1: </span><span style="color: #00ffff;">type</span> <span style="color: #ff7f50;">animal</span> =
+<span class="linenr"> 2: </span>  | <span style="color: #ff7f50;">Cat</span>
+<span class="linenr"> 3: </span>  | <span style="color: #ff7f50;">Dog</span>
+<span class="linenr"> 4: </span>  | <span style="color: #ff7f50;">Bird</span>;
+<span class="linenr"> 5: </span>
+<span class="linenr"> 6: </span><span style="color: #00ffff;">type</span> <span style="color: #ff7f50;">sound</span> =
+<span class="linenr"> 7: </span>  | <span style="color: #ff7f50;">Purr</span>
+<span class="linenr"> 8: </span>  | <span style="color: #ff7f50;">Pant</span>
+<span class="linenr"> 9: </span>  | <span style="color: #ff7f50;">Chirp</span>;
+<span class="linenr">10: </span>
+<span class="linenr">11: </span><span style="color: #00ffff;">let</span> petAnimal animal =&gt;
+<span class="linenr">12: </span>  <span style="color: #00ffff;">switch</span> animal {
+<span class="linenr">13: </span>  | <span style="color: #ff7f50;">Cat</span> =&gt; <span style="color: #ff7f50;">Purr</span>
+<span class="linenr">14: </span>  | <span style="color: #ff7f50;">Dog</span> =&gt; <span style="color: #ff7f50;">Pant</span>
+<span class="linenr">15: </span>  | <span style="color: #ff7f50;">Bird</span> =&gt; <span style="color: #932092;">"Singsong"</span>
+<span class="linenr">16: </span>  };
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre  class="src src-misc">Error: This expression has type string but an expression was expected of
+       type sound
+</pre>
+</div>
+</section>
+<section >
+
+
+<p>
+"Don't worry: I checked, you don't need that."
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-reason"><span class="linenr">1: </span><span style="color: #00ffff;">let</span> peek cat =&gt;
+<span class="linenr">2: </span>  <span style="color: #00ffff;">switch</span> (<span style="color: #ff7f50;">Random</span>.<span style="color: #ff7f50;">bool</span> ()) {
+<span class="linenr">3: </span>  | <span style="color: #00ffff;">true</span> =&gt; {<span style="color: #00f900; font-weight: bold;">lives</span>: cat.lives - 1}
+<span class="linenr">4: </span>  | <span style="color: #00ffff;">false</span> =&gt; cat
+<span class="linenr">5: </span>  | _ =&gt; failwith <span style="color: #932092;">"I'm really nervous to remove this catch-all"</span>
+<span class="linenr">6: </span>  };
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre  class="src src-misc">Warning 11: this match case is unused.
+</pre>
+</div>
+</section>
+<section >
+
+<div class="org-src-container">
+
+<pre  class="src src-reason"><span class="linenr">1: </span><span style="color: #00ffff;">let</span> peek cat =&gt;
+<span class="linenr">2: </span>  <span style="color: #00ffff;">switch</span> (<span style="color: #ff7f50;">Random</span>.<span style="color: #ff7f50;">bool</span> ()) {
+<span class="linenr">3: </span>  | <span style="color: #00ffff;">true</span> =&gt; {<span style="color: #00f900; font-weight: bold;">lives</span>: cat.lives - 1}
+<span class="linenr">4: </span>  | <span style="color: #00ffff;">false</span> =&gt; cat
+<span class="linenr">5: </span>  };
+</pre>
+</div>
+<p>
+"Actually, we usually write it this way"
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-reason"><span class="linenr">1: </span><span style="color: #00ffff;">let</span> peek cat =&gt; <span style="color: #ff7f50;">Random</span>.<span style="color: #ff7f50;">bool</span> () ? {<span style="color: #00f900; font-weight: bold;">lives</span>: cat.lives - 1} : cat;
+</pre>
+</div>
+<p>
+"In fact, let me do it for you"
+</p>
+</section>
+<section id="slide-orgheadline3">
+<h4 id="orgheadline3">BetterErrors</h4>
+
+<div class="figure">
+<p><img src="https://cloud.githubusercontent.com/assets/1909539/13025465/4baf80c2-d1d6-11e5-8f88-1d7b8065567c.png" alt="4baf80c2-d1d6-11e5-8f88-1d7b8065567c.png" />
+</p>
+</div>
+</section>
+<section >
+
+<div class="figure">
+<p><img src="https://cloud.githubusercontent.com/assets/1909539/13025466/4bc78262-d1d6-11e5-9dcc-2f9046dc1950.png" alt="4bc78262-d1d6-11e5-9dcc-2f9046dc1950.png" />
+</p>
+</div>
+</section>
+<section >
+
+<div class="figure">
+<p><img src="https://cloud.githubusercontent.com/assets/1909539/13025491/a47377f4-d1d6-11e5-9c12-c0b5285dba47.png" alt="a47377f4-d1d6-11e5-9c12-c0b5285dba47.png" />
+</p>
+</div>
+</section>
+<section >
+
+<div class="figure">
+<p><img src="https://cloud.githubusercontent.com/assets/1909539/13025492/a4895d30-d1d6-11e5-996a-b7e0e2ba63bf.png" alt="a4895d30-d1d6-11e5-996a-b7e0e2ba63bf.png" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline15">
+<h2 id="orgheadline15">Reach!</h2>
+<div class="outline-text-2" id="text-orgheadline15">
+</div></section>
+<section id="slide-orgheadline7">
+<h3 id="orgheadline7">Unikernels - MirageOS</h3>
+<ul>
+<li>New way of building and deploying applications</li>
+<li>Operating system as a library</li>
+<li>Pure OCaml-implementation of low-level libraries
+<ul>
+<li>TCP/IP</li>
+<li>TLS</li>
+
+</ul></li>
+<li>Data storage</li>
+<li>Compiled ahead of time</li>
+<li>Only pay for what you use</li>
+<li>No app on top of a run time on top of an operating system on top of a hypervisor</li>
+<li>Your app is the VM</li>
+
+</ul>
+
+</section>
+<section id="slide-orgheadline6">
+<h4 id="orgheadline6">Fantastically small numbers</h4>
+<ul>
+<li>Tens-of-thousands of lines of memory (and type!)-safe code vs millions of unsafe code</li>
+<li>Security implications!</li>
+<li>Compiled VMs weighing in at 100KB-10MB</li>
+<li>So small, every artifact deployed can be checked into a git repository - total audit!</li>
+<li>Repro cases now significantly different</li>
+<li>VM + App bootup time of 50ms (might hit 20ms!)</li>
+<li>New ways of deploying/booting applications (Jitsu)</li>
+
+</ul>
+
+</section>
+<section >
+<p>
+"<i>Like, it's-so-fast-you-can't-blink fast</i>"
+<img src="https://github.com/mirage/jitsu/raw/master/docs/jitsu.jpg" alt="jitsu.jpg" />
+</p>
+
+<ul>
+<li>Time to cold-boot a AWS Lambda function: 40ms</li>
+<li><p>
+Time to cold-boot an <b>entire</b> Mirage server: 20-50ms⁂
+</p>
+
+<p>
+⁂ Could be closer to 5-10ms with the right ukvm setup
+</p></li>
+
+</ul>
+</section>
+<section >
+<p>
+<i>But don't stop there, because&#x2026;</i>
+</p>
+</section>
+<section id="slide-orgheadline8">
+<h3 id="orgheadline8">Unix/Windows</h3>
+<p>
+Works too, and it works <b>fast</b>.
+What more is there to say? Develop and run traditional server or client apps in OCaml. We got you covered.
+</p>
+</section>
+<section >
+<p>
+<i>And that's not all!</i>
+</p>
+</section>
+<section id="slide-orgheadline12">
+<h3 id="orgheadline12">Javascript</h3>
+<p>
+BuckleScript: A JavaScript backend for OCaml focused on smooth integration and clean generated code.
+</p>
+
+</section>
+<section >
+<p>
+"<i>focused on &#x2026; clean generated code.</i>"
+</p>
+
+<ul>
+<li>No joke -</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline9">
+<h4 id="orgheadline9">Computer or human (1/2)?</h4>
+<div class="org-src-container">
+
+<pre  class="src src-js"><span class="linenr"> 1: </span><span style="color: #932092;">"use strict"</span>;
+<span class="linenr"> 2: </span><span style="color: #00ffff;">var</span> <span style="color: #00f900; font-weight: bold;">Int_map</span>=require(<span style="color: #932092;">"./int_map.js"</span>);
+<span class="linenr"> 3: </span><span style="color: #00ffff;">function</span> <span style="color: #4186be;">test</span>() {
+<span class="linenr"> 4: </span>  <span style="color: #00ffff;">var</span> <span style="color: #00f900; font-weight: bold;">m</span> = <span style="color: #586e75; font-style: italic;">/* </span><span style="color: #ff2600; font-style: italic;">Empty */</span>0;
+<span class="linenr"> 5: </span>  <span style="color: #00ffff;">for</span>(<span style="color: #00ffff;">var</span> <span style="color: #00f900; font-weight: bold;">i</span> = 0; i &lt;= 1000000; ++i){
+<span class="linenr"> 6: </span>    m = add(i, i, m);
+<span class="linenr"> 7: </span>  }
+<span class="linenr"> 8: </span>  <span style="color: #00ffff;">for</span>(<span style="color: #00ffff;">var</span> <span style="color: #00f900; font-weight: bold;">j</span> = 0; j &lt;= 1000000; ++j){
+<span class="linenr"> 9: </span>    find(j, m);
+<span class="linenr">10: </span>  }
+<span class="linenr">11: </span>  <span style="color: #00ffff;">return</span> <span style="color: #586e75; font-style: italic;">/* </span><span style="color: #ff2600; font-style: italic;">() */</span>0;
+<span class="linenr">12: </span>}
+<span class="linenr">13: </span>test(<span style="color: #586e75; font-style: italic;">/* </span><span style="color: #ff2600; font-style: italic;">() */</span>0);
+</pre>
+</div>
+
+</section>
+<section id="slide-orgheadline10">
+<h4 id="orgheadline10">Computer or human (2/2)?</h4>
+<div class="org-src-container">
+
+<pre  class="src src-js"><span class="linenr"> 1: </span><span style="color: #932092;">'use strict'</span>;
+<span class="linenr"> 2: </span><span style="color: #00ffff;">var</span> <span style="color: #00f900; font-weight: bold;">Pervasives</span> = require(<span style="color: #932092;">"bs-platform/lib/js/pervasives"</span>);
+<span class="linenr"> 3: </span><span style="color: #00ffff;">var</span> <span style="color: #00f900; font-weight: bold;">Http</span>       = require(<span style="color: #932092;">"http"</span>);
+<span class="linenr"> 4: </span>
+<span class="linenr"> 5: </span><span style="color: #00ffff;">var</span> <span style="color: #00f900; font-weight: bold;">hostname</span> = <span style="color: #932092;">"127.0.0.1"</span>;
+<span class="linenr"> 6: </span>
+<span class="linenr"> 7: </span><span style="color: #00ffff;">function</span> <span style="color: #4186be;">create_server</span>(<span style="color: #00f900; font-weight: bold;">http</span>) {
+<span class="linenr"> 8: </span>  <span style="color: #00ffff;">var</span> <span style="color: #00f900; font-weight: bold;">server</span> = http.createServer(<span style="color: #00ffff;">function</span> (<span style="color: #00f900; font-weight: bold;">_</span>, <span style="color: #00f900; font-weight: bold;">resp</span>) {
+<span class="linenr"> 9: </span>    resp.statusCode = 200;
+<span class="linenr">10: </span>    resp.setHeader(<span style="color: #932092;">"Content-Type"</span>, <span style="color: #932092;">"text/plain"</span>);
+<span class="linenr">11: </span>    <span style="color: #00ffff;">return</span> resp.end(<span style="color: #932092;">"Hello world\n"</span>);
+<span class="linenr">12: </span>  });
+<span class="linenr">13: </span>  <span style="color: #00ffff;">return</span> server.listen(3000, hostname, <span style="color: #00ffff;">function</span> () {
+<span class="linenr">14: </span>    console.log(<span style="color: #932092;">"Server running at http://"</span> +
+<span class="linenr">15: </span>    (hostname + (<span style="color: #932092;">":"</span> + (Pervasives.string_of_int(3000) + <span style="color: #932092;">"/"</span>))));
+<span class="linenr">16: </span>    <span style="color: #00ffff;">return</span> <span style="color: #586e75; font-style: italic;">/* </span><span style="color: #ff2600; font-style: italic;">() */</span>0;
+<span class="linenr">17: </span>  });
+<span class="linenr">18: </span>}
+<span class="linenr">19: </span>
+<span class="linenr">20: </span>create_server(Http);
+</pre>
+</div>
+</section>
+<section >
+<p>
+Trick question:
+Both compiled output!
+</p>
+</section>
+<section >
+<div class="org-src-container">
+
+<pre  class="src src-reason"><span class="linenr"> 1: </span><span style="color: #00ffff;">let</span> <span style="color: #00ffff;">module</span> <span style="color: #ff7f50;">IntMap</span> = <span style="color: #ff7f50;">Map</span>.<span style="color: #ff7f50;">Make</span> {
+<span class="linenr"> 2: </span>  <span style="color: #00ffff;">type</span> <span style="color: #ff7f50;">t</span> = <span style="color: #ff7f50;">int</span>;
+<span class="linenr"> 3: </span>  <span style="color: #00ffff;">let</span> compare (<span style="color: #00f900; font-weight: bold;">x</span>: <span style="color: #ff7f50;">int</span>) y =&gt; compare x y;
+<span class="linenr"> 4: </span>};
+<span class="linenr"> 5: </span>
+<span class="linenr"> 6: </span><span style="color: #00ffff;">let</span> test () =&gt; {
+<span class="linenr"> 7: </span>  <span style="color: #00ffff;">let</span> m = <span style="color: #00ffff;">ref</span> <span style="color: #ff7f50;">IntMap</span>.empty;
+<span class="linenr"> 8: </span>  <span style="color: #00ffff;">let</span> count = 1000000;
+<span class="linenr"> 9: </span>  <span style="color: #00ffff;">for</span> i <span style="color: #00ffff;">in</span> 0 to count {
+<span class="linenr">10: </span>    m := <span style="color: #ff7f50;">IntMap</span>.add i i !m
+<span class="linenr">11: </span>  };
+<span class="linenr">12: </span>  <span style="color: #00ffff;">for</span> i <span style="color: #00ffff;">in</span> 0 to count {
+<span class="linenr">13: </span>    ignore (<span style="color: #ff7f50;">IntMap</span>.find i !m)
+<span class="linenr">14: </span>  }
+<span class="linenr">15: </span>};
+</pre>
+</div>
+</section>
+<section >
+<div class="org-src-container">
+
+<pre  class="src src-reason"><span class="linenr"> 1: </span><span style="color: #00ffff;">let</span> port = 3000;
+<span class="linenr"> 2: </span>
+<span class="linenr"> 3: </span><span style="color: #00ffff;">let</span> hostname = <span style="color: #932092;">"127.0.0.1"</span>;
+<span class="linenr"> 4: </span>
+<span class="linenr"> 5: </span><span style="color: #00ffff;">let</span> create_server http =&gt; {
+<span class="linenr"> 6: </span>  <span style="color: #00ffff;">let</span> server = http##createServer (
+<span class="linenr"> 7: </span>    (<span style="color: #00ffff;">fun</span> req resp =&gt; {
+<span class="linenr"> 8: </span>        resp##statusCode#=200;
+<span class="linenr"> 9: </span>        resp##setHeader <span style="color: #932092;">"Content-Type"</span> <span style="color: #932092;">"text/plain"</span>;
+<span class="linenr">10: </span>        resp##_end <span style="color: #932092;">"Hello world\n"</span>
+<span class="linenr">11: </span>      }
+<span class="linenr">12: </span>    [@bs]
+<span class="linenr">13: </span>  );
+<span class="linenr">14: </span>  server##listen
+<span class="linenr">15: </span>    port
+<span class="linenr">16: </span>    hostname
+<span class="linenr">17: </span>    (
+<span class="linenr">18: </span>      (<span style="color: #00ffff;">fun</span> () =&gt; <span style="color: #ff7f50;">Js</span>.log (
+<span class="linenr">19: </span>          <span style="color: #932092;">"Server running at http://"</span> ^ hostname ^ <span style="color: #932092;">":"</span> ^
+<span class="linenr">20: </span>          <span style="color: #ff7f50;">Pervasives</span>.string_of_int port ^ <span style="color: #932092;">"/"</span>)
+<span class="linenr">21: </span>      )
+<span class="linenr">22: </span>      [@bs]
+<span class="linenr">23: </span>    )
+<span class="linenr">24: </span>};
+<span class="linenr">25: </span>
+<span class="linenr">26: </span><span style="color: #00ffff;">let</span> () = create_server <span style="color: #ff7f50;">Http_types</span>.http;
+</pre>
+</div>
+</section>
+<section id="slide-orgheadline11">
+<h4 id="orgheadline11">Fst</h4>
+<p>
+"<i>(Compiler) Finishes before others warm up</i>"
+</p>
+
+
+<div class="figure">
+<p><img src="https://bloomberg.github.io/bucklescript/slides/images/compile-time.PNG" alt="compile-time.PNG" />
+</p>
+</div>
+
+<p>
+(So fast, you don't have time to say fast)
+</p>
+</section>
+<section id="slide-orgheadline13">
+<h3 id="orgheadline13">ARM64</h3>
+<p>
+Native iOS/Android anyone?
+<img src="https://github.com/sgrove/age-of-reason/raw/master/img/relayout.png" alt="relayout.png" />
+</p>
+</section>
+<section >
+<p>
+Native Rasperry pi!
+<img src="https://pbs.twimg.com/media/CsmbHUUUIAAX6Ug.jpg" alt="CsmbHUUUIAAX6Ug.jpg" />
+</p>
+
+<p>
+DEMO!
+</p>
+
+</section>
+<section id="slide-orgheadline14">
+<h3 id="orgheadline14">Reach?</h3>
+<p>
+<i>Great semantics, even better reach</i>
+</p>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline16">
+<h2 id="orgheadline16">Power!</h2>
+<ul>
+<li>Well-suited for systems programming and for app dev</li>
+<li>An obsession with performance that borders on the worrisome at times</li>
+<li>Statically compiled with predictable characteristics</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline17">
+<h2 id="orgheadline17">Conclusion</h2>
+<ul>
+<li>Sound semantics</li>
+<li>Unprecedented reach</li>
+<li>Absurd developer experience (and only going to get better)</li>
+
+</ul>
+</section>
+<section >
+<p>
+Imagine Flow and Babelscript integrated into a sound language with a great build tool, deep editor integration, and fantastic reach. That's Reason(ml).
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline20">
+<h2 id="orgheadline20">So where's OCaml been?</h2>
+
+<div class="figure">
+<p><img src="https://www.support.com/wp-content/uploads/2015/09/Chasm.png" alt="Chasm.png" />
+</p>
+</div>
+</section>
+<section id="slide-orgheadline18">
+<h3 id="orgheadline18">OCaml Challenges</h3>
+<ul>
+<li>Ecosystem</li>
+<li>Mindset/culture (traditionally not for web apps)</li>
+<li>Market selection: If it’s so old and hasn’t won, it must not be good, right?</li>
+<li>Documentation</li>
+<li>Polish</li>
+<li>Tools, tools, tools</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline19">
+<h3 id="orgheadline19">OCaml Challenges continued&#x2026;</h3>
+<ul>
+<li>Tooling, namespacing, etc. are nightmares</li>
+<li>Learning resources can be outdated</li>
+<li>Syntax can be off-putting</li>
+<li>Community is significantly smaller than many others</li>
+<li>Errors can be inscrutable</li>
+<li>Single-core</li>
+
+</ul>
+</section>
+<section >
+<p>
+Reason is a systematic approach to solving the challenges faced by OCaml.
+</p>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline21">
+<h2 id="orgheadline21">Re-Projects</h2>
+<ul>
+<li><a href="https://github.com/jaredly/rejs"><b>rejs</b></a>: Parse js, output Reason, jumpstart conversions</li>
+<li><a href="https://github.com/reasonml/rebel"><b>Rebel</b></a>: Reason build system with careful incremental compilation</li>
+<li><a href="https://github.com/jordwalke/ReLayout"><b>ReLayout</b></a>: Flexbox implementation in pure Reason</li>
+<li><a href="https://github.com/reasonml/ExampleProject"><b>ExampleProject</b></a>: Easy-to-get-started example project</li>
+<li><a href="https://github.com/bsansouci/rewitness"><b>Rewitness</b></a>: Demo OpenGL/WebGL Reason game</li>
+<li><b>Rereact</b>: Reactjs bindings in Bucklescript</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline23">
+<h2 id="orgheadline23">Tradeoffs</h2>
+<ul>
+<li>JS?</li>
+<li>ClojureScript?</li>
+<li>Elm?</li>
+
+</ul>
+</section>
+<section id="slide-orgheadline22">
+<h3 id="orgheadline22">Flow</h3>
+<p>
+Flow.js:
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-js"><span class="linenr"> 1: </span><span style="color: #586e75; font-style: italic;">/* </span><span style="color: #ff2600; font-style: italic;">@flow */</span>
+<span class="linenr"> 2: </span>type schrodingersCat = {
+<span class="linenr"> 3: </span> lives: number
+<span class="linenr"> 4: </span>};
+<span class="linenr"> 5: </span><span style="color: #00ffff;">let</span> <span style="color: #00f900; font-weight: bold;">peek</span> = (cat:schrodingersCat) =&gt; {
+<span class="linenr"> 6: </span> <span style="color: #00ffff;">if</span> (Math.random() &gt; 0.5) {
+<span class="linenr"> 7: </span> <span style="color: #00ffff;">return</span> {...cat, lives: cat.lives - 1};
+<span class="linenr"> 8: </span> }
+<span class="linenr"> 9: </span> <span style="color: #00ffff;">return</span> cat;
+<span class="linenr">10: </span>};
+</pre>
+</div>
+<p>
+Reasonml:
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-reason"><span class="linenr">1: </span><span style="color: #00ffff;">type</span> <span style="color: #ff7f50;">schrodingersCat</span> = {<span style="color: #00f900; font-weight: bold;">lives</span>: <span style="color: #ff7f50;">int</span>};
+<span class="linenr">2: </span>
+<span class="linenr">3: </span><span style="color: #00ffff;">let</span> peek cat =&gt;
+<span class="linenr">4: </span>  <span style="color: #00ffff;">if</span> (<span style="color: #ff7f50;">Random</span>.<span style="color: #ff7f50;">bool</span> ()) {
+<span class="linenr">5: </span>    {<span style="color: #00f900; font-weight: bold;">lives</span>: cat.lives - 1}
+<span class="linenr">6: </span>  } <span style="color: #00ffff;">else</span> {
+<span class="linenr">7: </span>    cat
+<span class="linenr">8: </span>  };
+</pre>
+</div>
+
+<p>
+Very similar!
+</p>
+</section>
+<section >
+
+<ul>
+<li>Flow: Great approach, making huge strides. Sadly working uphill, e.g. No exhaustive pattern matching</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline24">
+<h2 id="orgheadline24">Misc</h2>
+<p>
+There's just too much stuff
+</p>
+<ul>
+<li>Syntax - This'll blow your mind. JSX, GraphQL, CLOJURE!
+<ul>
+<li>Let 1000 syntaxes bloom-phase</li>
+
+</ul></li>
+<li>Algebraic Effect Handlers (see <a href="https://www.meetup.com/papers-we-love/events/168722902/">Eff presentation</a>, though greatly improved since)</li>
+<li>Spacetime - Insane allocation tracker/profiler</li>
+<li>Multicore</li>
+
+</ul>
+</section>
+<section >
+<ul>
+<li>Super-aggressive dead-code elimination</li>
+
+</ul>
+
+<div class="figure">
+<p><img src="https://github.com/sgrove/age-of-reason/raw/master/img/unikernel.png" alt="unikernel.png" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgheadline25">
+<h2 id="orgheadline25">ReasonCup</h2>
+<p>
+Distributed friendly hacking event! - <a href="https://twitter.com/sgrove">@sgrove</a>, <a href="https://twitter.com/ReasonCup">@reasoncup</a>, <a href="http://reasoncup.com/">http://reasoncup.com/</a>
+<img src="http://reasoncup.com/resources/public/img/ReasonCup2016.png" alt="ReasonCup2016.png" />
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline26">
+<h2 id="orgheadline26">Thanks</h2>
+<p>
+<a href="https://twitter.com/bsansouci">Ben</a> &amp; <a href="https://github.com/Schmavery">Avery</a>!
+Author of Rewitness, helped a ton with env setup, code structure, hand-holding, general emotional support, etc.
+</p>
+
+<p>
+<img src="https://github.com/sgrove/age-of-reason/raw/master/img/bensan.jpeg" alt="bensan.jpeg" /> &amp;
+<img src="https://github.com/sgrove/age-of-reason/raw/master/img/schmavery.jpeg" alt="schmavery.jpeg" />
+</p>
+
+</section>
+<section >
+<p>
+<a href="https://twitter.com/Sander_Spies">Sanders</a> and <a href="https://twitter.com/danielwoelfel">Daniel</a>
+</p>
+
+<p>
+JSX &amp; Talk review
+<img src="https://github.com/sgrove/age-of-reason/raw/master/img/sanderspies.jpeg" alt="sanderspies.jpeg" /> &amp;
+<img src="https://github.com/sgrove/age-of-reason/raw/master/img/dwwoelfel.png" alt="dwwoelfel.png" />
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="/support/reveal.js/lib/js/head.min.js"></script>
+<script src="/support/reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: '/support/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: '/support/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: '/support/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: '/support/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: '/support/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>
