@@ -375,9 +375,7 @@ Author of Rewitness, helped a ton with env setup, code structure, hand-holding, 
 [[https://github.com/sgrove/age-of-reason/raw/master/img/schmavery.jpeg]]
 
 #+REVEAL: split
-[[https://twitter.com/Sander_Spies][Sanders]] and [[https://twitter.com/danielwoelfel][Daniel]]
-
-JSX & Talk review
+[[https://twitter.com/Sander_Spies][Sanders]] and [[https://twitter.com/danielwoelfel][Daniel]] | JSX & Talk review
 [[https://github.com/sgrove/age-of-reason/raw/master/img/sanderspies.jpeg]] &
 [[https://github.com/sgrove/age-of-reason/raw/master/img/dwwoelfel.png]]
 
