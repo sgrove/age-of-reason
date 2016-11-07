@@ -1,0 +1,383 @@
+#+REVEAL_THEME: solarized
+#+REVEAL_TRANS: linear
+#+OPTIONS: reveal_title_slide:nil num:nil
+* Reason
+
+A new developer experience based on OCaml, built by the same people behind React, with friendly syntax, deep editor integration, and carefully thought out build tooling.
+
+* Demo
+
+First off, prove it's a Pacman-complete language.
+
+Anyone know Witness?
+
+Anyone like the Re-prefix?
+
+Then you'll love...
+
+[[https://github.com/bsansouci/rewitness][*Rewitness*]]
+
+
+* Fun!
+Reason is a language that wants to *help* you, not block you.
+
+The /Goldilocks/ of languages
+
++ Type system tries *really* not to block or burden you
++ But still, it's   *very* effective at blocking simple bugs
++ Encourages a free *fun* ctional style, but allows for imperative code when necessary
+
+** Robotic pair buddy
+#+REVEAL: split
+"Whoops, we missed a spot!"
+#+BEGIN_SRC reason -n
+let is_odd number =>
+  switch number {
+  | 0 => false
+  | 1 => true
+  | 2 => false
+  };
+#+END_SRC
+
+#+BEGIN_SRC misc
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+3
+#+END_SRC
+#+REVEAL: split
+"Whoops, we missed a spot!"
+#+BEGIN_SRC reason -n
+type animal =
+  | Cat
+  | Dog
+  | Bird;
+
+let petAnimal animal =>
+  switch animal {
+  | Cat => {}
+  | Dog => {}
+  };
+#+END_SRC
+
+#+BEGIN_SRC misc
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+Bird
+#+END_SRC
+#+REVEAL: split
+"One of these is not like the other..."
+#+BEGIN_SRC reason -n
+type animal =
+  | Cat
+  | Dog
+  | Bird;
+
+type sound =
+  | Purr
+  | Pant
+  | Chirp;
+
+let petAnimal animal =>
+  switch animal {
+  | Cat => Purr
+  | Dog => Pant
+  | Bird => "Singsong"
+  };
+#+END_SRC
+
+#+BEGIN_SRC misc
+Error: This expression has type string but an expression was expected of
+       type sound
+#+END_SRC
+#+REVEAL: split
+
+
+"Don't worry: I checked, you don't need that."
+#+BEGIN_SRC reason -n
+let peek cat =>
+  switch (Random.bool ()) {
+  | true => {lives: cat.lives - 1}
+  | false => cat
+  | _ => failwith "I'm really nervous to remove this catch-all"
+  };
+#+END_SRC
+
+#+BEGIN_SRC misc
+Warning 11: this match case is unused.
+
+#+END_SRC
+#+REVEAL: split
+
+#+BEGIN_SRC reason -n
+let peek cat =>
+  switch (Random.bool ()) {
+  | true => {lives: cat.lives - 1}
+  | false => cat
+  };
+#+END_SRC
+"Actually, we usually write it this way"
+#+BEGIN_SRC reason -n
+let peek cat => Random.bool () ? {lives: cat.lives - 1} : cat;
+#+END_SRC
+"In fact, let me do it for you"
+*** BetterErrors
+[[https://cloud.githubusercontent.com/assets/1909539/13025465/4baf80c2-d1d6-11e5-8f88-1d7b8065567c.png]]
+#+REVEAL: split
+[[https://cloud.githubusercontent.com/assets/1909539/13025466/4bc78262-d1d6-11e5-9dcc-2f9046dc1950.png]]
+#+REVEAL: split
+https://cloud.githubusercontent.com/assets/1909539/13025491/a47377f4-d1d6-11e5-9c12-c0b5285dba47.png
+#+REVEAL: split
+https://cloud.githubusercontent.com/assets/1909539/13025492/a4895d30-d1d6-11e5-996a-b7e0e2ba63bf.png
+* Reach!
+** Unikernels - MirageOS
++ New way of building and deploying applications
++ Operating system as a library
++ Pure OCaml-implementation of low-level libraries
+ + TCP/IP
+ + TLS
++ Data storage
++ Compiled ahead of time
++ Only pay for what you use
++ No app on top of a run time on top of an operating system on top of a hypervisor
++ Your app is the VM
+
+*** Fantastically small numbers
++ Tens-of-thousands of lines of memory (and type!)-safe code vs millions of unsafe code
++ Security implications!
++ Compiled VMs weighing in at 100KB-10MB
++ So small, every artifact deployed can be checked into a git repository - total audit!
++ Repro cases now significantly different
++ VM + App bootup time of 50ms (might hit 20ms!)
++ New ways of deploying/booting applications (Jitsu)
+
+#+REVEAL: split
+"/Like, it's-so-fast-you-can't-blink fast/"
+[[https://github.com/mirage/jitsu/raw/master/docs/jitsu.jpg]]
+
++ Time to cold-boot a AWS Lambda function: 40ms
++ Time to cold-boot an *entire* Mirage server: 20-50ms⁂
+
+  ⁂ Could be closer to 5-10ms with the right ukvm setup
+#+REVEAL: split
+/But don't stop there, because.../
+** Unix/Windows
+Works too, and it works *fast*.
+What more is there to say? Develop and run traditional server or client apps in OCaml. We got you covered.
+#+REVEAL: split
+/And that's not all!/
+** Javascript
+BuckleScript: A JavaScript backend for OCaml focused on smooth integration and clean generated code.
+
+#+REVEAL: split
+"/focused on ... clean generated code./"
+
+- No joke -
+*** Computer or human (1/2)?
+#+BEGIN_SRC js -n
+"use strict";
+var Int_map=require("./int_map.js");
+function test() {
+  var m = /* Empty */0;
+  for(var i = 0; i <= 1000000; ++i){
+    m = add(i, i, m);
+  }
+  for(var j = 0; j <= 1000000; ++j){
+    find(j, m);
+  }
+  return /* () */0;
+}
+test(/* () */0);
+#+END_SRC
+
+*** Computer or human (2/2)?
+#+BEGIN_SRC js -n
+'use strict';
+var Pervasives = require("bs-platform/lib/js/pervasives");
+var Http       = require("http");
+
+var hostname = "127.0.0.1";
+
+function create_server(http) {
+  var server = http.createServer(function (_, resp) {
+    resp.statusCode = 200;
+    resp.setHeader("Content-Type", "text/plain");
+    return resp.end("Hello world\n");
+  });
+  return server.listen(3000, hostname, function () {
+    console.log("Server running at http://" +
+    (hostname + (":" + (Pervasives.string_of_int(3000) + "/"))));
+    return /* () */0;
+  });
+}
+
+create_server(Http);
+#+END_SRC
+#+REVEAL: split
+Trick question:
+Both compiled output!
+#+REVEAL: split
+#+BEGIN_SRC reason -n
+let module IntMap = Map.Make {
+  type t = int;
+  let compare (x: int) y => compare x y;
+};
+
+let test () => {
+  let m = ref IntMap.empty;
+  let count = 1000000;
+  for i in 0 to count {
+    m := IntMap.add i i !m
+  };
+  for i in 0 to count {
+    ignore (IntMap.find i !m)
+  }
+};
+#+END_SRC
+#+REVEAL: split
+#+BEGIN_SRC reason -n
+let port = 3000;
+
+let hostname = "127.0.0.1";
+
+let create_server http => {
+  let server = http##createServer (
+    (fun req resp => {
+        resp##statusCode#=200;
+        resp##setHeader "Content-Type" "text/plain";
+        resp##_end "Hello world\n"
+      }
+    [@bs]
+  );
+  server##listen
+    port
+    hostname
+    (
+      (fun () => Js.log (
+          "Server running at http://" ^ hostname ^ ":" ^
+          Pervasives.string_of_int port ^ "/")
+      )
+      [@bs]
+    )
+};
+
+let () = create_server Http_types.http;
+#+END_SRC
+*** Fst
+"/(Compiler) Finishes before others warm up/"
+
+[[https://bloomberg.github.io/bucklescript/slides/images/compile-time.PNG]]
+
+(So fast, you don't have time to say fast)
+** ARM64
+Native iOS/Android anyone?
+[[https://github.com/sgrove/age-of-reason/raw/master/img/relayout.png]]
+#+REVEAL: split
+Native Rasperry pi!
+[[https://pbs.twimg.com/media/CsmbHUUUIAAX6Ug.jpg]]
+
+ DEMO!
+
+** Reach?
+/Great semantics, even better reach/
+* Power!
++ Well-suited for systems programming and for app dev
++ An obsession with performance that borders on the worrisome at times
++ Statically compiled with predictable characteristics
+* Conclusion
++ Sound semantics
++ Unprecedented reach
++ Absurd developer experience (and only going to get better)
+#+REVEAL: split
+Imagine Flow and Babelscript integrated into a sound language with a great build tool, deep editor integration, and fantastic reach. That's Reason(ml).
+
+* So where's OCaml been?
+  [[https://www.support.com/wp-content/uploads/2015/09/Chasm.png]]
+** OCaml Challenges
++ Ecosystem
++ Mindset/culture (traditionally not for web apps)
++ Market selection: If it’s so old and hasn’t won, it must not be good, right?
++ Documentation
++ Polish
++ Tools, tools, tools
+** OCaml Challenges continued...
++ Tooling, namespacing, etc. are nightmares 
++ Learning resources can be outdated
++ Syntax can be off-putting
++ Community is significantly smaller than many others
++ Errors can be inscrutable
++ Single-core
+#+REVEAL: split
+Reason is a systematic approach to solving the challenges faced by OCaml.
+* Re-Projects
++ [[https://github.com/jaredly/rejs][*rejs*]]: Parse js, output Reason, jumpstart conversions
++ [[https://github.com/reasonml/rebel][*Rebel*]]: Reason build system with careful incremental compilation
++ [[https://github.com/jordwalke/ReLayout][*ReLayout*]]: Flexbox implementation in pure Reason  
++ [[https://github.com/reasonml/ExampleProject][*ExampleProject*]]: Easy-to-get-started example project
++ [[https://github.com/bsansouci/rewitness][*Rewitness*]]: Demo OpenGL/WebGL Reason game
++ *Rereact*: Reactjs bindings in Bucklescript
+
+* Tradeoffs
++ JS?
++ ClojureScript?
++ Elm?
+** Flow
+Flow.js:
+#+BEGIN_SRC js -n
+
+/* @flow */
+type schrodingersCat = {
+ lives: number
+};
+let peek = (cat:schrodingersCat) => {
+ if (Math.random() > 0.5) {
+ return {...cat, lives: cat.lives - 1};
+ }
+ return cat;
+};
+#+END_SRC
+Reasonml:
+#+BEGIN_SRC reason -n
+type schrodingersCat = {lives: int};
+
+let peek cat =>
+  if (Random.bool ()) {
+    {lives: cat.lives - 1}
+  } else {
+    cat
+  };
+#+END_SRC
+
+Very similar!
+#+REVEAL: split
+
++ Flow: Great approach, making huge strides. Sadly working uphill, e.g. No exhaustive pattern matching
+
+* Misc
+There's just too much stuff
++ Syntax - This'll blow your mind. JSX, GraphQL, CLOJURE!
+  + Let 1000 syntaxes bloom-phase
++ Algebraic Effect Handlers (see [[https://www.meetup.com/papers-we-love/events/168722902/][Eff presentation]], though greatly improved since)
++ Spacetime - Insane allocation tracker/profiler
++ Multicore
+#+REVEAL: split
++ Super-aggressive dead-code elimination
+[[https://github.com/sgrove/age-of-reason/raw/master/img/unikernel.png]]
+* ReasonCup
+Distributed friendly hacking event! - [[https://twitter.com/sgrove][@sgrove]], [[https://twitter.com/ReasonCup][@reasoncup]], http://reasoncup.com
+[[http://reasoncup.com/resources/public/img/ReasonCup2016.png]]
+
+* Thanks
+
+[[https://twitter.com/bsansouci][Ben]] & [[https://github.com/Schmavery][Avery]]!
+Author of Rewitness, helped a ton with env setup, code structure, hand-holding, general emotional support, etc.
+
+[[https://github.com/sgrove/age-of-reason/raw/master/img/bensan.jpeg]] &
+[[https://github.com/sgrove/age-of-reason/raw/master/img/schmavery.jpeg]]
+
+#+REVEAL: split
+[[https://twitter.com/Sander_Spies][Sanders]] and [[https://twitter.com/danielwoelfel][Daniel]]
+
+JSX & Talk review
+[[https://github.com/sgrove/age-of-reason/raw/master/img/sanderspies.jpeg]] &
+[[https://github.com/sgrove/age-of-reason/raw/master/img/dwwoelfel.png]]
+
